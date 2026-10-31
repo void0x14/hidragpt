@@ -1,12 +1,12 @@
-# HydraGPT
+# HidraGPT
 
-> **HydraGPT — made by [void0x14](https://github.com/void0x14).**
-> Repo: https://github.com/void0x14/hydragpt
+> **HidraGPT — made by [void0x14](https://github.com/void0x14).**
+> Repo: https://github.com/void0x14/hidragpt
 > If you use, fork, or build on this, keep the name. Say *"void0x14 made this"*.
 > That is the only ask. — heh.
 
 A Linux patch for the **ChatGPT Desktop / Codex** Electron app that adds a
-**NATIVE ↔ HYDRAGPT** switch to the existing in-app browser panel.
+**NATIVE ↔ HIDRAGPT** switch to the existing in-app browser panel.
 
 The native engine is the app's own `<webview>`. The second engine is
 **Kahin / Camoufox / Mirage**, driven over MCP and rendered inside the same panel
@@ -16,10 +16,10 @@ shortcuts stay in charge.
 
 ## What works
 
-- Switch button after **Help** in the title bar: blue `NATIVE`, red `HYDRAGPT`.
+- Switch button after **Help** in the title bar: blue `NATIVE`, red `HIDRAGPT`.
   Click toggles the engine; a toast confirms it.
-- The app's address bar shows the **HydraGPT URL** and the tab reads
-  `HydraGPT · <page title>` while HydraGPT is active.
+- The app's address bar shows the **HidraGPT URL** and the tab reads
+  `HidraGPT · <page title>` while HidraGPT is active.
 - Click, type, scroll, Enter and navigation are forwarded to Camoufox.
 - The app's **Back / Forward / Reload** buttons drive Kahin.
 - **Persistent profile** (`~/.kahin/camoufox-profile`) and a stable identity:
@@ -81,7 +81,7 @@ The UI button calls `window.__kahinEngine.switch('kahin'|'native')`.
 kb.js                     injected entry (resources/kb.js)
 kahin/boot.js             main bridge: switch, app protocol, frame pull, control socket
 kahin/overlay.js          canvas surface in the existing renderer
-kahin/ui.js               NATIVE/HYDRAGPT button + address/tab feedback + nav forwarding
+kahin/ui.js               NATIVE/HIDRAGPT button + address/tab feedback + nav forwarding
 kahin/mcp-client.js       Kahin stdio MCP client
 kahin/browser-pipe.js     first-class Browser Use backend
 kahin/dom-shim.js         CDP DOM/Runtime shim for Mirage
@@ -93,7 +93,7 @@ RUNTIME-EVIDENCE.md       live evidence
 
 ## Known limits
 
-- The HydraGPT surface is a **canvas**, not a DOM page: text selection, copy,
+- The HidraGPT surface is a **canvas**, not a DOM page: text selection, copy,
   DevTools for the remote page and site annotations do not work. The page
   itself is interactive (click/type/scroll/nav).
 - The app's absolute RSS in a long-lived, DevTools-heavy session stays high
@@ -107,5 +107,5 @@ RUNTIME-EVIDENCE.md       live evidence
 
 **AGPL-3.0-or-later**. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
 
-> HydraGPT — made by [void0x14](https://github.com/void0x14).
+> HidraGPT — made by [void0x14](https://github.com/void0x14).
 > Keep the attribution. Heh.
