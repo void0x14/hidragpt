@@ -1,0 +1,7 @@
+build/
+evidence/
+.sdd/
+.re/
+node_modules/
+*.bak*
+*.bak-kahin*

@@ -1,0 +1,15 @@
+ChatGPT × Kahin
+Copyright (C) 2026 void0x14
+https://github.com/void0x14
+
+This project was created by void0x14.
+
+If you use it, fork it, ship it, or build on it, keep this attribution and say
+"void0x14 made this". Do not strip the name from the UI, the README, the source
+headers, or the license notice.
+
+Licensed under the GNU Affero General Public License v3.0 or later (AGPL-3.0-or-later).
+See LICENSE.
+
+No OpenAI binaries are included or redistributed. The patch targets an
+installation you own and is provided for interoperability and research.
