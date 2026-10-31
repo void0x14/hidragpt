@@ -65,12 +65,12 @@
   function render() {
     const btn = ensureButton();
     const kahin = state.engine === 'kahin';
-    btn.textContent = state.pending ? '…' : (kahin ? 'KAHIN' : 'NATIVE');
+    btn.textContent = state.pending ? '…' : (kahin ? 'HYDRAGPT' : 'NATIVE');
     btn.style.background = state.pending ? '#6b7280' : (kahin ? '#dc2626' : '#2563eb');
     btn.style.opacity = state.pending ? '0.7' : '1';
     btn.title = state.error
       ? 'Switch failed: ' + state.error
-      : (kahin ? 'Active engine: Kahin (click for Native)' : 'Active engine: Native (click for Kahin)');
+      : (kahin ? 'Active engine: HydraGPT (click for Native)' : 'Active engine: Native (click for HydraGPT)');
     place();
   }
 
@@ -150,7 +150,7 @@
     }
     if (tab && (chrome.url || chrome.title)) {
       chrome.tabEl = tab;
-      const label = ('Kahin · ' + (chrome.title || chrome.url)).slice(0, 60);
+      const label = ('HydraGPT · ' + (chrome.title || chrome.url)).slice(0, 60);
       const span = tabLabel(tab);
       if (!chrome.tabNative && span) chrome.tabNative = span.textContent;
       if (!chrome.tabAria) chrome.tabAria = tab.getAttribute('aria-label');
@@ -213,8 +213,8 @@
     state.error = data.error ? String(data.error) : null;
     state.lastAt = Date.now();
     render();
-    if (state.error) showToast('Kahin: ' + state.error, true);
-    else showToast(state.engine === 'kahin' ? 'Kahin active' : 'Native active', false);
+    if (state.error) showToast('HydraGPT: ' + state.error, true);
+    else showToast(state.engine === 'kahin' ? 'HydraGPT active' : 'Native active', false);
   });
   window.addEventListener('message', (event) => {
     const data = event.data;

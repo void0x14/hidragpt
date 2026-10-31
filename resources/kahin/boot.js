@@ -429,11 +429,11 @@ async function ensureKahinIdentity() {
   try {
     const list = await STATE.mcp.call('kahin_identity_list', {}, 30000);
     const names = ((list && list.identities) || []).map((x) => x && x.name).filter(Boolean);
-    if (!names.includes('chatgpt-kahin')) {
-      await STATE.mcp.call('kahin_identity_new', { name: 'chatgpt-kahin', os_target: 'linux' }, 60000);
-      log('identity', 'created chatgpt-kahin');
+    if (!names.includes('hydragpt')) {
+      await STATE.mcp.call('kahin_identity_new', { name: 'hydragpt', os_target: 'linux' }, 60000);
+      log('identity', 'created hydragpt');
     }
-    return 'chatgpt-kahin';
+    return 'hydragpt';
   } catch (err) {
     log('identity', err);
     return null;
@@ -458,13 +458,13 @@ async function ensureKahin() {
 // Blank-page guarantee: mirror, prove, fall back, and never show an empty page.
 // ---------------------------------------------------------------------------
 const LANDING_HTML = [
-  '<!doctype html><meta charset="utf-8"><title>KAHIN ENGINE READY</title>',
+  '<!doctype html><meta charset="utf-8"><title>HYDRAGPT ENGINE READY</title>',
   '<style>html,body{margin:0;height:100%;background:#0b0d10;color:#e6edf3;',
   'font:600 30px/1.4 system-ui,sans-serif;display:flex;align-items:center;',
   'justify-content:center;flex-direction:column;gap:14px}h1{margin:0;font-size:34px;',
   'letter-spacing:.08em}p{margin:0;font:400 13px/1.5 ui-monospace,monospace;',
   'color:#8b949e;max-width:660px;text-align:center}</style>',
-  '<h1>KAHIN ENGINE READY</h1>',
+  '<h1>HYDRAGPT ENGINE READY</h1>',
   '<p>Page mirror unavailable. Kahin/Mirage is running; use the address bar or agent tools.</p>',
 ].join('');
 
@@ -513,18 +513,18 @@ async function ensureKahinPage(w) {
     await STATE.mcp.call('kahin_navigate', { url: LANDING_URL, wait_until: 'domcontentloaded' }, 20000);
   } catch (err) { tried.push('landing nav: ' + (err && err.message || err)); }
   let page = await kahinPageInfo();
-  if (!page || !String(page.text || '').includes('KAHIN ENGINE READY')) {
+  if (!page || !String(page.text || '').includes('HYDRAGPT ENGINE READY')) {
     try {
       await kahinEval('(() => { document.open(); document.write(' + JSON.stringify(LANDING_HTML) + '); document.close(); return true; })()');
     } catch (err) { tried.push('landing write: ' + (err && err.message || err)); }
     page = await kahinPageInfo();
   }
-  const landed = !!(page && String(page.text || '').includes('KAHIN ENGINE READY'));
+  const landed = !!(page && String(page.text || '').includes('HYDRAGPT ENGINE READY'));
   return {
     ok: landed,
     fallback: 'landing',
     url: page ? String(page.href || '') : '',
-    error: (landed ? 'page mirror unavailable; painted KAHIN ENGINE READY' : 'page mirror and landing page failed') + ': ' + tried.join(' | '),
+    error: (landed ? 'page mirror unavailable; painted HYDRAGPT ENGINE READY' : 'page mirror and landing page failed') + ': ' + tried.join(' | '),
   };
 }
 
@@ -922,8 +922,8 @@ async function handleRpc(req) {
   if (method === 'browser.debug') { const w = stateFor(primaryOwner()); return w ? { engine: w.engine, route: w.route, sent: w.sent || 0, lastSentAt: w.lastSentAt || 0, lastUrl: w.lastUrl, lastTitle: w.lastTitle, kahinError: w.kahinError || null, frameSeq: w.frameSeq, latest: w.latest ? { seq: w.latest.seq, bytes: w.latest.data.length, mimeType: w.latest.mimeType } : null, pump: w.pump ? { frames: w.pump.frames, mode: w.pump.mode, lastError: w.pump.lastError } : null } : null; }
   if (method === 'ui.openTab') { const owner = primaryOwner(); const w = stateFor(owner); const conversationId = params.conversationId || (w.route && w.route.conversationId) || 'client-new-thread:' + randomUUID(); const browserTabId = params.browserTabId || randomUUID(); owner.send(FOR_VIEW, { type: 'open-browser-tab', active: true, browserTabId, conversationId, initialUrl: params.url || 'about:blank', source: 'manual', initiator: 'window_open' }); return { sent: true, conversationId, browserTabId }; }
   if (method === 'ui.closeTab') { const owner = primaryOwner(); const w = stateFor(owner); owner.send(FOR_VIEW, { type: 'close-browser-tab', conversationId: params.conversationId || (w.route && w.route.conversationId), browserTabId: params.browserTabId }); return { sent: true }; }
-  if (method === 'ui.emitTitle') { const owner = primaryOwner(); const guest = await resolveGuest(owner); if (!guest) throw new Error('no guest'); const title = String(params.title || 'KAHIN'); guest.emit('page-title-updated', { preventDefault() {} }, title, false); return { emitted: true, title, guestId: guest.id }; }
-  if (method === 'ui.state') { const w = stateFor(primaryOwner()); const title = String(params.title || 'KAHIN TEST'); const url = String(params.url || 'https://example.com/'); const conversationId = params.conversationId || (w.route && w.route.conversationId); const browserTabId = params.browserTabId || (w.route && w.route.browserTabId); const snapshot = { faviconUrl: null, navigation: { currentIndex: 0, entries: [{ title, url }] }, runtime: 'electron-webview', title, updatedAt: Date.now(), url }; w.owner.send(FOR_VIEW, { type: 'browser-sidebar-state', conversationId, browserTabId, snapshot }); w.sent = (w.sent || 0) + 1; return { sent: true, conversationId, browserTabId }; }
+  if (method === 'ui.emitTitle') { const owner = primaryOwner(); const guest = await resolveGuest(owner); if (!guest) throw new Error('no guest'); const title = String(params.title || 'HYDRAGPT'); guest.emit('page-title-updated', { preventDefault() {} }, title, false); return { emitted: true, title, guestId: guest.id }; }
+  if (method === 'ui.state') { const w = stateFor(primaryOwner()); const title = String(params.title || 'HYDRAGPT TEST'); const url = String(params.url || 'https://example.com/'); const conversationId = params.conversationId || (w.route && w.route.conversationId); const browserTabId = params.browserTabId || (w.route && w.route.browserTabId); const snapshot = { faviconUrl: null, navigation: { currentIndex: 0, entries: [{ title, url }] }, runtime: 'electron-webview', title, updatedAt: Date.now(), url }; w.owner.send(FOR_VIEW, { type: 'browser-sidebar-state', conversationId, browserTabId, snapshot }); w.sent = (w.sent || 0) + 1; return { sent: true, conversationId, browserTabId }; }
   if (method === 'browser.pump') { const w = stateFor(primaryOwner()); return w && w.pump ? { frames: w.pump.frames, lastAt: w.pump.lastAt, lastError: w.pump.lastError, mode: w.pump.mode, screencastId: w.pump.screencastId, frameSeq: w.frameSeq, latestSeq: w.latest ? w.latest.seq : 0, latestBytes: w.latest ? w.latest.data.length : 0 } : null; }
   if (method === 'kahin.tool') return ensureKahin().then(() => STATE.mcp.call(params.name, params.args || {}, params.timeoutMs || 60000));
   throw new Error('unknown method: ' + method);

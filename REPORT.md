@@ -1,4 +1,4 @@
-# ChatGPT Desktop × Kahin — backend switch + spawn fix
+# HydraGPT — ChatGPT Desktop × Kahin/Camoufox
 
 **Hedef:** `/usr/lib/chatgpt` — `chatgpt-bin 26.928.20755-1`, `openai-codex-electron` 26.928.20755, Chromium 154.0.8037.57 (CachyOS / X11).
 **Paket:** `app.asar` orijinal `48975e18…38beb` (yedek `.bak-kahin`), yamalı `e98d82d3…4c3`.
@@ -65,7 +65,7 @@ return appHandler(event, message);   // native yol aynen
 - Girdi canvas'tan `__kahin_input` olarak main'e, oradan Kahin MCP'ye gider.
 
 ### 2.3 Native state koruması
-Uygulamanın `browser-sidebar-state` mesajı native sayfa denetleyicisini tetikliyor. Kahin URL'sini göndermek gizli webview'ı Kahin URL'sine yönlendiriyor; geri dönüşte sayfa bileşeni bozuluyor. Bu yüzden:
+Uygulamanın `browser-sidebar-state` mesajı native sayfa denetleyicisini tetikliyor. HydraGPT URL'sini göndermek gizli webview'ı aynı URL'ye yönlendiriyor; geri dönüşte sayfa bileşeni bozuluyor. Bu yüzden:
 
 - **`browser-sidebar-state` Kahin için gönderilmiyor** (ne Kahin ne native switch'te). Denendi; native sekme `Tab content couldn't render` veriyor.
 - Renderer'da `<webview>.loadURL` Kahin aktifken Kahin'e yönlendirilir; detach'ta geri alınır.
@@ -73,9 +73,9 @@ Uygulamanın `browser-sidebar-state` mesajı native sayfa denetleyicisini tetikl
 - Sonuç: native sekme about:blank/özgün halinde kalır, geri dönüş temiz.
 
 ### 2.4 UI geri bildirimi ve kalıcılık
-- Adres çubuğu Kahin URL'sini, aktif sekme `Kahin · <title>` gösterir; değerler **DOM'a** yazılır (`browser-sidebar-state` yok).
+- Adres çubuğu HydraGPT URL'sini, aktif sekme `HydraGPT · <title>` gösterir; değerler **DOM'a** yazılır (`browser-sidebar-state` yok).
 - Uygulamanın kendi Back/Forward/Reload düğmeleri Kahin aktifken enable edilir; tıklamalar `__kahin_input` ile Kahin'e gider.
-- Camoufox profili `~/.kahin/camoufox-profile` kalıcı ve `chatgpt-kahin` kimliği sabit. Cookie testi app restart sonrası `kahin_persist=1` döndü.
+- Camoufox profili `~/.kahin/camoufox-profile` kalıcı ve `hydragpt` kimliği sabit. Cookie testi app restart sonrası `kahin_persist=1` döndü.
 - Canvas tıklama/yazma/Enter, DDG aramasında `q=kahin+test` üretti.
 
 ---
@@ -112,7 +112,7 @@ Ajan `agent.browsers.list()` içinde `Kahin`'i görür; native `Codex In-app Bro
 ## 5. Dosyalar
 
 ```
-chatgpt-kahin/
+hydragpt/
 ├── REPORT.md
 ├── apply-patch.mjs
 ├── evidence/
@@ -152,7 +152,7 @@ window.__kahinEngine.switch('kahin')
 - Frame pull: `frameSeq` 131, `latest` 50 298 B JPEG; canvas 870x768 meanRGB 234.4; screenshot `evidence/kahin-fixed.png`.
 - 60 s bellek: app 2527.0 → 2315.5 MB, engine 1170.8 → 1074.0 MB (delta negatif, sızıntı yok).
 - Switch back: `err=0`, native URL `about:blank`, overlay `display:none`, buton `NATIVE` mavi.
-- UI: input `https://example.com/`, tab `Kahin · Example Domain`; `evidence/final-usable.png`.
+- UI: input `https://example.com/`, tab `HydraGPT · Example Domain`; `evidence/final-usable.png`.
 - Kalıcılık: cookie restart sonrası `kahin_persist=1`; profil `~/.kahin/camoufox-profile`.
 - Navigasyon: app Back `example.org -> example.com`, Reload; canvas DDG `q=kahin+test`.
 - Bellek 90 s: app 2377.5 -> 2357.4 MB (dalgalanma, lineer büyüme yok); frame 63 657 B; ~4.8 fps.
@@ -161,7 +161,7 @@ window.__kahinEngine.switch('kahin')
 
 ## 6. Sınırlar
 
-- **Chrome metni artık çalışıyor**: adres çubuğu Kahin URL'sini, sekme `Kahin · <title>` gösteriyor; Back/Forward/Reload uygulamanın düğmelerinden Kahin'e gidiyor.
+- **Chrome metni artık çalışıyor**: adres çubuğu HydraGPT URL'sini, sekme `HydraGPT · <title>` gösteriyor; Back/Forward/Reload uygulamanın düğmelerinden HydraGPT'ye gidiyor.
 - **Canvas bir DOM tarayıcı değil**: metin seçimi/copy/DevTools/annotation yok.
 - **Profil patch'i venv içinde**: AUR Kahin güncellemesi üzerine yazabilir (yedek `.bak-kahin-profile`).
 - **Test artefaktı:** test oturumları kullanıcının Google sekmesini `about:blank` ile değiştirdi; o sekmenin geçmişi kayboldu.
